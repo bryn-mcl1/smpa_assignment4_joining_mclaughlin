@@ -63,8 +63,13 @@ Using the joined election results / urban/suburban/rural table created above:
 
 ```{r}
 
+elec_region_join %>% 
+  select(rural_urban,winner_2020,state_code) %>%
+  filter(state_code=="VA") %>% 
+  group_by(rural_urban,winner_2020) %>% 
+  summarise(n())
 
-
+  
 
 ```
 
@@ -77,9 +82,13 @@ Join together the election results and demographics tables above, and then use t
 -   group/summarize to calculate the mean pct of Trump 2020 vote in the counties above or below national average for college graduates (`pct_ed_college_all_abovebelow_natl`)
 
 ```{r}
+elec_demo_join <- left_join(counties_demographics, counties_elexresults)
 
-
-
+elec_demo_join %>% 
+  select(pct_ed_college_all_abovebelow_natl,pct_r_2020,state_code) %>%
+  filter(state_code=="FL") %>% 
+  group_by(pct_ed_college_all_abovebelow_natl) %>% 
+  summarise(mean(pct_r_2020))
 
 ```
 
@@ -92,10 +101,10 @@ Using the joined table you made above:
     Note we're looking for the entire country here.
 
 ```{r}
-
-
-
-
+elec_demo_join %>% 
+  select(pct_ed_college_all_abovebelow_natl,pct_r_2020,state_code) %>%
+  group_by(pct_ed_college_all_abovebelow_natl) %>% 
+  summarise(mean(pct_r_2020))
 ```
 
 Now using the joined datasets above, come up with two groupings you find interesting or newsworthy in a particular state, and replicate the steps above them them instead.
@@ -104,17 +113,26 @@ Now using the joined datasets above, come up with two groupings you find interes
 
 ```{r}
 
+elec_demo_join %>% 
+  select(pct_born_foreign_abovebelow_natl,pct_r_2020,state_code) %>%
+  filter(state_code=="PA") %>% 
+  group_by(pct_born_foreign_abovebelow_natl) %>% 
+  summarise(mean(pct_r_2020))
 
-
-
+#here I want to look at how foreign born populations in PA effect Republican voting patterns.
 ```
 
 6)  
 
 ```{r}
 
+elec_demo_join %>% 
+  select(pct_ed_college_white_female_abovebelow_natl,pct_r_2020,state_code) %>%
+  filter(state_code=="PA") %>% 
+  group_by(pct_ed_college_white_female_abovebelow_natl) %>% 
+  summarise(mean(pct_r_2020))
 
-
+#here I want to look at how college educated white women in PA effect Republican voting patterns.
 
 
 ```
